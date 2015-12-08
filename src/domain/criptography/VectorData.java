@@ -20,9 +20,9 @@ public class VectorData implements BinaryData {
 
 
     // Another bottleneck TODO REFACTOR
-    public static VectorData fromBytes(List<Integer> bytes){
+    public static VectorData fromBytes(BinaryStream stream){
         StringBuilder builder = new StringBuilder();
-        bytes.forEach(builder::append);
+        stream.getBytes().forEach(builder::append);
 
         return new VectorData(builder.toString());
     }
@@ -34,9 +34,7 @@ public class VectorData implements BinaryData {
 
     @Override
     public BinaryStream getStream() {
-        BinaryStream stream = new BinaryStream();
-        stream.addAll(binaryData);
-        return stream;
+        return new BinaryStream(binaryData);
     }
 
     @Override

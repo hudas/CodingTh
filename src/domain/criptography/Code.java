@@ -42,7 +42,7 @@ public class Code implements Crypto{
 
         BinaryStream encodedStream = new BinaryStream();
         encodedWords.stream()
-                    .forEach(encodedWord -> encodedStream.addAll(encodedWord));
+                    .forEach(encodedWord -> encodedStream.addBytes(encodedWord));
 
         return encodedStream;
     }
@@ -60,7 +60,7 @@ public class Code implements Crypto{
 
         BinaryStream decodedStream = new BinaryStream();
         decodedWords.stream()
-                    .forEach(decodedWord -> decodedStream.addAll(decodedWord));
+                    .forEach(decodedWord -> decodedStream.addBytes(decodedWord));
 
         return decodedStream;
     }
@@ -114,7 +114,7 @@ public class Code implements Crypto{
     }
 
     private boolean isValid(BinaryStream stream){
-        return stream.size() % dimension == 0;
+        return stream.getBytes().size() % dimension == 0;
     }
 
     private ParityCheckMatrix generateCheckMatrix(GeneratorMatrix generatorMatrix){

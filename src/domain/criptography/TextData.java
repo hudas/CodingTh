@@ -30,13 +30,11 @@ public class TextData implements BinaryData {
                      .collect(Collectors.toList());
     }
 
-    public static TextData fromBytes(List<Integer> bytes){
+    public static TextData fromBytes(BinaryStream stream){
         StringBuilder builder = new StringBuilder();
 
-        BinaryStream.from(bytes)
-                    .splitToWords(8)
-                    .forEach(word -> builder.append((char) Integer.parseInt(word.toString(), 2)));
-
+        stream.splitToWords(8)
+              .forEach(word -> builder.append((char) Integer.parseInt(word.toString(), 2)));
 
         return new TextData(builder.toString());
     }
@@ -49,9 +47,7 @@ public class TextData implements BinaryData {
 
     @Override
     public BinaryStream getStream() {
-        BinaryStream stream = new BinaryStream();
-        stream.addAll(binaryData);
-        return stream;
+        return new BinaryStream(binaryData);
     }
 
     @Override

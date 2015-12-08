@@ -1,5 +1,7 @@
 package domain.chanel;
 
+import domain.criptography.BinaryStream;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -19,8 +21,9 @@ public class Channel {
         this.noiseThreshold = MAX_NOISE - noisePercentage;
     }
 
-    public List<Integer> send(List<Integer> input){
-        return input.stream().map(value -> distort(value)).collect(Collectors.toList());
+    public BinaryStream send(BinaryStream input){
+        List<Integer> values = input.getBytes().stream().map(value -> distort(value)).collect(Collectors.toList());
+        return BinaryStream.from(values);
     }
 
     private Integer distort(Integer inputBit){

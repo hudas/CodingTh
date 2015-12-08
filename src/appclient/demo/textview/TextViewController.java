@@ -46,12 +46,12 @@ public class TextViewController {
                 return;
             }
 
-            rawResult.setText(TextData.fromBytes(channel.send(inputData.getBytes())).getRepresentation());
+            rawResult.setText(TextData.fromBytes(channel.send(inputData.getStream())).getRepresentation());
 
             Crypto crypto = new CodeAdapter(code);
             try {
                 BinaryStream encodedBytes = crypto.encode(inputData.getStream());
-                BinaryStream dissortedBytes = BinaryStream.from(channel.send(encodedBytes));
+                BinaryStream dissortedBytes = channel.send(encodedBytes);
                 BinaryStream decodedBytes = crypto.decode(dissortedBytes);
                 encodedResult.setText(TextData.fromBytes(decodedBytes).getRepresentation());
             } catch (EncodingException e) {

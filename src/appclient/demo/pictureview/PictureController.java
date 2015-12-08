@@ -64,13 +64,13 @@ public class PictureController {
 
             ImageData inputImage = new ImageData(bufferedImage);
 
-            ImageData receivedImage = ImageData.from(BinaryStream.from(channel.send(inputImage.getBytes())), inputImage.getWidth(), inputImage.getHeight());
+            ImageData receivedImage = ImageData.from(channel.send(inputImage.getStream()), inputImage.getWidth(), inputImage.getHeight());
             rawResult.setImage(SwingFXUtils.toFXImage(receivedImage.getRepresentation(), null));
 
             try {
                 BinaryStream encodedStream = code.encode(inputImage.getStream());
-                BinaryStream dissortedStream = BinaryStream.from(channel.send(encodedStream));
-                ImageData decoded = ImageData.from(BinaryStream.from(code.decode(dissortedStream)), inputImage.getWidth(), inputImage.getHeight());
+                BinaryStream dissortedStream = channel.send(encodedStream);
+                ImageData decoded = ImageData.from(code.decode(dissortedStream), inputImage.getWidth(), inputImage.getHeight());
 
                 encodedResult.setImage(SwingFXUtils.toFXImage(decoded.getRepresentation(), null));
 

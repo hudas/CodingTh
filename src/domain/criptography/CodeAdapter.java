@@ -18,18 +18,17 @@ public class CodeAdapter implements Crypto {
 
     @Override
     public BinaryStream encode(BinaryStream dataStream) throws EncodingException {
-        Integer countOfBytesLeft = dataStream.size() % code.getDimension();
-        List<Integer> rawBytes = dataStream.subList(0, dataStream.size() - countOfBytesLeft);
-        leftOverBytes = dataStream.subList(dataStream.size() - countOfBytesLeft, dataStream.size());
+        Integer countOfBytesLeft = dataStream.getBytes().size() % code.getDimension();
+        List<Integer> rawBytes = dataStream.getBytes().subList(0, dataStream.getBytes().size() - countOfBytesLeft);
+        leftOverBytes = dataStream.getBytes().subList(dataStream.getBytes().size() - countOfBytesLeft, dataStream.getBytes().size());
 
         return code.encode(BinaryStream.from(rawBytes));
     }
 
     @Override
     public BinaryStream decode(BinaryStream dataStream) throws EncodingException {
-        BinaryStream decodedStream = new BinaryStream();
-        decodedStream.addAll(code.decode(dataStream));
-        decodedStream.addAll(leftOverBytes);
+        BinaryStream decodedStream = code.decode(dataStream);
+        decodedStream.addBytes(leftOverBytes);
         return decodedStream;
     }
 }

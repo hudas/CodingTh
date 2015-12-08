@@ -71,7 +71,7 @@ public class VectorViewController {
                 errorLabel.setText("Užkoduoto vektoriaus reikšmė turi būti dvejetainio formato");
                 return;
             }
-            VectorData received = VectorData.fromBytes(channel.send(inputData.getBytes()));
+            VectorData received = VectorData.fromBytes(channel.send(inputData.getStream()));
             dissortedVector.setText(received.getRawVector());
         });
 
