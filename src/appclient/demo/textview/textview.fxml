@@ -1,0 +1,24 @@
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Label?>
+<GridPane fx:controller="appclient.demo.textview.TextViewController"
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+
+    <Text text="Demonstracija su Tekstu" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0" GridPane.halignment="CENTER"/>
+
+    <Label fx:id="errorLabel" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+
+    <Text text="Įeities tekstas" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP"/>
+    <TextArea fx:id="inputText" promptText="Įeities tekstas" prefColumnCount="20" prefRowCount="5" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <Button fx:id="send" text="Siųsti kanalu" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+
+    <Text text="Koduoto vektoriaus rezultatas" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="CENTER"/>
+
+    <Text text="Nekoduoto vektoriaus rezultatas" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.halignment="CENTER"/>
+
+    <Label fx:id="encodedResult" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+    <Label fx:id="rawResult" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+</GridPane>
