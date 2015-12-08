@@ -55,14 +55,16 @@ public class Code implements Crypto{
 
     @Override
     public BinaryStream decode(BinaryStream dataStream){
-        List<BinaryWord> decodedWords = dataStream.splitToWords(length)
-                                                        .stream()
-                                                        .map(word -> decode(word))
-                                                        .collect(Collectors.toList());
-
         BinaryStream decodedStream = new BinaryStream();
-        decodedWords.stream()
-                    .forEach(decodedWord -> decodedStream.addBytes(decodedWord.getBits()));
+
+        BinaryWord decodingWord = new BinaryWord();
+        for(int index = 0; index < dataStream.getBytes().size(); index += length){
+            for(int cpIndex = 0; cpIndex < length; cpIndex++){
+                decodingWord.addBit(dataStream.getBytes().get(index + cpIndex));
+            }
+            decodedStream.addBytes(decode(decodingWord).getBits());
+            decodingWord.clearBits();
+        }
 
         return decodedStream;
     }
