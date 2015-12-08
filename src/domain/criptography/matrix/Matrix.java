@@ -16,7 +16,7 @@ public abstract class Matrix {
         this.linesCount = linesCount;
     }
 
-    abstract List<Integer> multiply(List<Integer> vector);
+    abstract List<Byte> multiply(List<Byte> vector);
 
     public void addMatrixLine(MatrixLine matrixLines) {
         this.matrixLines.add(matrixLines);

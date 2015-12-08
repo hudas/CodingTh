@@ -1,7 +1,6 @@
 package domain.criptography.matrix;
 
 import com.sun.deploy.util.StringUtils;
-import domain.criptography.BinaryWord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +18,10 @@ public class GeneratorMatrix extends Matrix {
 
 
     @Override
-    public List<Integer> multiply(List<Integer> word){
-        List<List<Integer>> multipliedMatrix = multiplyMatrix(word);
+    public List<Byte> multiply(List<Byte> word){
+        List<List<Byte>> multipliedMatrix = multiplyMatrix(word);
 
-        BinaryWord scalarSum = new BinaryWord();
+        List<Byte> scalarSum = new ArrayList<>();
 
         for(int index = 0; index < columnsCount; index++){
             scalarSum.add(calculateColumnSum(multipliedMatrix, index));
@@ -31,11 +30,11 @@ public class GeneratorMatrix extends Matrix {
         return scalarSum;
     }
 
-    private List<List<Integer>> multiplyMatrix(List<Integer> word) {
-        List<List<Integer>> multipliedMatrix = new ArrayList<>();
+    private List<List<Byte>> multiplyMatrix(List<Byte> word) {
+        List<List<Byte>> multipliedMatrix = new ArrayList<>();
 
         for(int index = 0; index < linesCount; index++){
-            Integer byteValue = word.get(index);
+            Byte byteValue = word.get(index);
             MatrixLine line = matrixLines.get(index);
 
             multipliedMatrix.add(multiplyMatrixLine(byteValue, line));
@@ -43,18 +42,21 @@ public class GeneratorMatrix extends Matrix {
         return multipliedMatrix;
     }
 
-    private List<Integer> multiplyMatrixLine(Integer byteValue, MatrixLine line) {
+    private List<Byte> multiplyMatrixLine(Byte byteValue, MatrixLine line) {
         return line.stream()
-                .map(value -> value * byteValue)
+                .map(value -> {
+                    Integer res = value * byteValue;
+                    return res.byteValue();
+                })
                 .collect(Collectors.toList());
     }
 
-    private Integer calculateColumnSum(List<List<Integer>> matrix, int columnIndex) {
+    private Byte calculateColumnSum(List<List<Byte>> matrix, int columnIndex) {
         Integer columnSum = 0;
-        for(List<Integer> line : matrix){
+        for(List<Byte> line : matrix){
             columnSum += line.get(columnIndex);
         }
-        return columnSum;
+        return columnSum.byteValue();
     }
 
     public String toString(){

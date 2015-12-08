@@ -10,7 +10,7 @@ import java.util.List;
 public class CodeAdapter implements Crypto {
     Code code;
 
-    List<Integer> leftOverBytes = new ArrayList<>();
+    List<Byte> leftOverBytes = new ArrayList<>();
 
     public CodeAdapter(Code code) {
         this.code = code;
@@ -19,7 +19,7 @@ public class CodeAdapter implements Crypto {
     @Override
     public BinaryStream encode(BinaryStream dataStream) throws EncodingException {
         Integer countOfBytesLeft = dataStream.getBytes().size() % code.getDimension();
-        List<Integer> rawBytes = dataStream.getBytes().subList(0, dataStream.getBytes().size() - countOfBytesLeft);
+        List<Byte> rawBytes = dataStream.getBytes().subList(0, dataStream.getBytes().size() - countOfBytesLeft);
         leftOverBytes = dataStream.getBytes().subList(dataStream.getBytes().size() - countOfBytesLeft, dataStream.getBytes().size());
 
         return code.encode(BinaryStream.from(rawBytes));

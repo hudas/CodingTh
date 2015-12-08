@@ -22,12 +22,13 @@ public class Channel {
     }
 
     public BinaryStream send(BinaryStream input){
-        List<Integer> values = input.getBytes().stream().map(value -> distort(value)).collect(Collectors.toList());
+        List<Byte> values = input.getBytes().stream().map(value -> distort(value)).collect(Collectors.toList());
         return BinaryStream.from(values);
     }
 
-    private Integer distort(Integer inputBit){
+    private Byte distort(Byte inputBit){
         Integer currentNoise = noise.nextInt(MAX_NOISE);
-        return (currentNoise > noiseThreshold) ? 1 - inputBit : inputBit;
+        Integer bit = (currentNoise > noiseThreshold) ? 1 - inputBit : inputBit;
+        return bit.byteValue();
     }
 }

@@ -52,6 +52,8 @@ public class PictureController {
             File imageFile = chooser.showOpenDialog(null);
 
             long startTime = System.currentTimeMillis();
+            long endTime = 0;
+
 
             BufferedImage bufferedImage = null;
             try {
@@ -67,10 +69,22 @@ public class PictureController {
             ImageData receivedImage = ImageData.from(channel.send(inputImage.getStream()), inputImage.getWidth(), inputImage.getHeight());
             rawResult.setImage(SwingFXUtils.toFXImage(receivedImage.getRepresentation(), null));
 
+            endTime = System.currentTimeMillis();
+            System.out.println("Step1 : " + (endTime - startTime));
+
             try {
                 BinaryStream encodedStream = code.encode(inputImage.getStream());
+                endTime = System.currentTimeMillis();
+                System.out.println("Encode : " + (endTime - startTime));
+
                 BinaryStream dissortedStream = channel.send(encodedStream);
+                endTime = System.currentTimeMillis();
+                System.out.println("Send : " + (endTime - startTime));
+
                 ImageData decoded = ImageData.from(code.decode(dissortedStream), inputImage.getWidth(), inputImage.getHeight());
+
+                endTime = System.currentTimeMillis();
+                System.out.println("Decode : " + (endTime - startTime));
 
                 encodedResult.setImage(SwingFXUtils.toFXImage(decoded.getRepresentation(), null));
 
@@ -78,7 +92,6 @@ public class PictureController {
                 e.printStackTrace();
             }
 
-            long endTime = System.currentTimeMillis();
 
             System.out.println("Užtruko : " + (endTime - startTime));
 

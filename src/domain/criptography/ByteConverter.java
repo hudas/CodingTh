@@ -5,11 +5,10 @@ import java.util.List;
 /**
  * Created by ignas on 15.12.8.
  */
-public class Byte {
+public class ByteConverter {
     Integer decimalValue;
-    BinaryWord binaryValue;
 
-    public Byte(Integer decimalValue) {
+    public ByteConverter(Integer decimalValue) {
         this.decimalValue = decimalValue;
     }
 
@@ -20,14 +19,14 @@ public class Byte {
     // ši optimizacija leidžia apdoroti full hd nuotrauką per 2s
     public static BinaryWord fromDecimalByte(Integer decimal){
         BinaryWord word = new BinaryWord();
-        word.add((decimal & 0b10000000) >> 7);
-        word.add((decimal & 0b01000000) >> 6);
-        word.add((decimal & 0b00100000) >> 5);
-        word.add((decimal & 0b00010000) >> 4);
-        word.add((decimal & 0b00001000) >> 3);
-        word.add((decimal & 0b00000100) >> 2);
-        word.add((decimal & 0b00000010) >> 1);
-        word.add(decimal & 0b00000001);
+        word.addBit((byte) ((decimal & 0b10000000) >> 7));
+        word.addBit((byte) ((decimal & 0b01000000) >> 6));
+        word.addBit((byte) ((decimal & 0b00100000) >> 5));
+        word.addBit((byte) ((decimal & 0b00010000) >> 4));
+        word.addBit((byte) ((decimal & 0b00001000) >> 3));
+        word.addBit((byte) ((decimal & 0b00000100) >> 2));
+        word.addBit((byte) ((decimal & 0b00000010) >> 1));
+        word.addBit((byte) (decimal & 0b00000001));
         return word;
     }
 
@@ -35,10 +34,10 @@ public class Byte {
     public static BinaryWord fromDecimal(Integer decimal){
         BinaryWord word = new BinaryWord();
 
-        word.addAll(fromDecimalByte((decimal >> 24) & 0xFF));
-        word.addAll(fromDecimalByte((decimal >> 16) & 0xFF));
-        word.addAll(fromDecimalByte((decimal >> 8) & 0xFF));
-        word.addAll(fromDecimalByte(decimal & 0xFF));
+        word.addBits(fromDecimalByte((decimal >> 24) & 0xFF).getBits());
+        word.addBits(fromDecimalByte((decimal >> 16) & 0xFF).getBits());
+        word.addBits(fromDecimalByte((decimal >> 8) & 0xFF).getBits());
+        word.addBits(fromDecimalByte(decimal & 0xFF).getBits());
 
         return word;
     }

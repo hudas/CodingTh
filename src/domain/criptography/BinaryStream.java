@@ -1,7 +1,6 @@
 package domain.criptography;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -9,17 +8,17 @@ import java.util.List;
  */
 public class BinaryStream {
 
-    List<Integer> bytes = new ArrayList<>();
+    List<Byte> bytes = new ArrayList<>();
 
     public BinaryStream(){
 
     }
 
-    public BinaryStream(List<Integer> bytes) {
+    public BinaryStream(List<Byte> bytes) {
         this.bytes = bytes;
     }
 
-    public static BinaryStream from(List<Integer> values){
+    public static BinaryStream from(List<Byte> values){
         return new BinaryStream(values);
     }
 
@@ -27,18 +26,16 @@ public class BinaryStream {
     public List<BinaryWord> splitToWords(Integer wordLength) {
         List<BinaryWord> words = new ArrayList<>();
         for(int i = 0 ; i < bytes.size(); i += wordLength){
-            BinaryWord word =  new BinaryWord();
-            word.addAll(bytes.subList(i, i + wordLength));
-            words.add(word);
+            words.add(new BinaryWord(bytes.subList(i, i + wordLength)));
         }
 
         return words;
     }
 
-    public List<Integer> getBytes() {
+    public List<Byte> getBytes() {
         return bytes;
     }
-    public void addBytes(List<Integer> bytes){
+    public void addBytes(List<Byte> bytes){
         this.bytes.addAll(bytes);
     }
 }

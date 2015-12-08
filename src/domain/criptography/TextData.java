@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  */
 public class TextData implements BinaryData {
     String rawVector;
-    List<Integer> binaryData = new ArrayList<>();
+    List<Byte> binaryData = new ArrayList<>();
 
     public TextData(String rawText) {
         this.rawVector = rawText;
@@ -21,12 +21,13 @@ public class TextData implements BinaryData {
     }
 
 
-    private List<Integer> convertCharacterToBinaryList(Integer charValue){
+    private List<Byte> convertCharacterToBinaryList(Integer charValue){
         return String.format("%8s", Integer.toBinaryString(charValue))
                      .replace(' ', '0')
                      .chars()
                      .map(Character::getNumericValue)
                      .boxed()
+                     .map(Integer::byteValue)
                      .collect(Collectors.toList());
     }
 
@@ -41,8 +42,8 @@ public class TextData implements BinaryData {
 
 
     @Override
-    public List<Integer> getBytes() {
-        ;       return binaryData;
+    public List<Byte> getBytes() {
+        return binaryData;
     }
 
     @Override

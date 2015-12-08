@@ -35,20 +35,22 @@ public class Code implements Crypto{
             throw new EncodingException();
         }
 
-        List<BinaryWord> encodedWords = dataStream.splitToWords(dimension)
-                                            .stream()
-                                            .map(word -> encode(word))
-                                            .collect(Collectors.toList());
-
         BinaryStream encodedStream = new BinaryStream();
-        encodedWords.stream()
-                    .forEach(encodedWord -> encodedStream.addBytes(encodedWord));
+
+        BinaryWord encodingWord = new BinaryWord();
+        for(int index = 0; index < dataStream.getBytes().size(); index += dimension){
+            for(int cpIndex = 0; cpIndex < dimension; cpIndex++){
+                encodingWord.addBit(dataStream.getBytes().get(index + cpIndex));
+            }
+            encodedStream.addBytes(encode(encodingWord).getBits());
+            encodingWord.clearBits();
+        }
 
         return encodedStream;
     }
 
     public BinaryWord encode(BinaryWord word){
-        return convertToBinary(matrix.multiply(word));
+        return convertToBinary(matrix.multiply(word.getBits()));
     }
 
     @Override
@@ -60,7 +62,7 @@ public class Code implements Crypto{
 
         BinaryStream decodedStream = new BinaryStream();
         decodedWords.stream()
-                    .forEach(decodedWord -> decodedStream.addBytes(decodedWord));
+                    .forEach(decodedWord -> decodedStream.addBytes(decodedWord.getBits()));
 
         return decodedStream;
     }
@@ -68,17 +70,17 @@ public class Code implements Crypto{
     public BinaryWord decode(BinaryWord word){
         BinaryWord transmittedWord = null;
 
-        Integer leaderWeight = standartArray.getSindromeWeight(BinaryWord.from(convertToBinary(checkMatrix.multiply(word))));
+        Integer leaderWeight = standartArray.getSindromeWeight(convertToBinary(checkMatrix.multiply(word.getBits())));
         if (leaderWeight == 0){
             transmittedWord = word;
         }
 
         int index = 0;
         while (index < length && transmittedWord == null) {
-            leaderWeight = standartArray.getSindromeWeight(BinaryWord.from(convertToBinary(checkMatrix.multiply(word))));
+            leaderWeight = standartArray.getSindromeWeight(convertToBinary(checkMatrix.multiply(word.getBits())));
 
             word.invertAtIndex(index);
-            Integer invertedWordLeaderWeight = standartArray.getSindromeWeight(BinaryWord.from(convertToBinary(checkMatrix.multiply(word))));
+            Integer invertedWordLeaderWeight = standartArray.getSindromeWeight(convertToBinary(checkMatrix.multiply(word.getBits())));
 
             if (invertedWordLeaderWeight == 0){
                 transmittedWord = word;
@@ -92,7 +94,7 @@ public class Code implements Crypto{
             index++;
         }
 
-        return BinaryWord.from(transmittedWord.subList(0, dimension));
+        return BinaryWord.from(transmittedWord.getBits().subList(0, dimension));
     }
 
 
@@ -104,13 +106,13 @@ public class Code implements Crypto{
         return dimension;
     }
 
-    private BinaryWord convertToBinary(List<Integer> multipliedMatrix){
-        BinaryWord word = new BinaryWord();
-        word.addAll(multipliedMatrix.stream()
-                .map(value -> Math.abs(value) % 2) // Kadangi sistema dvejetaine pavertimas paprastas, aukstesniam laipsniui reiktu sudetingesnes logikos
-                .collect(Collectors.toList()));
-
-        return word;
+    private BinaryWord convertToBinary(List<Byte> multipliedMatrix){
+        return new BinaryWord(multipliedMatrix.stream()
+                                              .map(value -> {
+                                                  Integer res = Math.abs(value) % 2;
+                                                  return res.byteValue();
+                                              }) // Kadangi sistema dvejetaine pavertimas paprastas, aukstesniam laipsniui reiktu sudetingesnes logikos
+                                              .collect(Collectors.toList()));
     }
 
     private boolean isValid(BinaryStream stream){
@@ -150,7 +152,7 @@ public class Code implements Crypto{
     private List<Sindrome> generateSindromes(ParityCheckMatrix checkMatrix, int weight, Set<BinaryWord> possibleWords) {
         List<Sindrome> sindromes = new ArrayList<>();
         for(BinaryWord word : possibleWords){
-            Sindrome sindrome = new Sindrome(convertToBinary(checkMatrix.multiply(word)), weight);
+            Sindrome sindrome = new Sindrome(convertToBinary(checkMatrix.multiply(word.getBits())), weight);
             if (!sindromes.stream().anyMatch(existingSindrome -> existingSindrome.equalsTo(sindrome))){
                 sindromes.add(sindrome);
             }
@@ -175,11 +177,11 @@ public class Code implements Crypto{
         return possibleWords;
     }
 
-    private Set<BinaryWord> getAllWordsForWeight(BinaryWord word, Integer weight, Integer currentWeight, Integer fromIndex){
-        Set<BinaryWord> possibleWords = new HashSet<>();
+    private List<BinaryWord> getAllWordsForWeight(BinaryWord word, Integer weight, Integer currentWeight, Integer fromIndex){
+        List<BinaryWord> possibleWords = new ArrayList<>();
 
         for(int index = fromIndex; index < length; index++){
-            word.set(index, 1);
+            word.set(index, (byte) 1);
 
             if (weight == currentWeight){
                 possibleWords.add(word.getCopy());
@@ -187,7 +189,7 @@ public class Code implements Crypto{
                 possibleWords.addAll(getAllWordsForWeight(word, weight, currentWeight + 1, index + 1)); // Recursion
             }
 
-            word.set(index, 0);
+            word.set(index, (byte) 0);
         }
 
         return possibleWords;

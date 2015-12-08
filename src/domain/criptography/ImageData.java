@@ -1,12 +1,6 @@
 package domain.criptography;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.Time;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +11,7 @@ import java.util.stream.Collectors;
 public class ImageData implements BinaryData {
 
     BufferedImage rawImage;
-    List<Integer> bytes = new ArrayList();
+    List<Byte> bytes = new ArrayList();
 
     Integer width;
     Integer height;
@@ -28,19 +22,15 @@ public class ImageData implements BinaryData {
         height = image.getHeight();
         width = image.getWidth();
 
-
         // Iteruojame per visą paveikslėliuo duomenų baitų matricą ir dedame kiekvieną baitą į sarašą.
         for(int verticalIndex = 0; verticalIndex < height; verticalIndex++){
             for(int horizontalIndex = 0; horizontalIndex < width; horizontalIndex++){
-                bytes.addAll(Byte.fromDecimal(image.getRGB(horizontalIndex, verticalIndex))); // Susisdedame visus baitus į sąrašą.
+                bytes.addAll(ByteConverter.fromDecimal(image.getRGB(horizontalIndex, verticalIndex)).getBits()); // Susisdedame visus baitus į sąrašą.
             }
         }
-
-
     }
 
     public static ImageData from(BinaryStream bytes, Integer width, Integer height){
-
         // Baitus gauname tiesiai iš kanalo t.y. sąrašas su reikšmėmis su 1 ir 0, reikia pasiversti atgal į
         // dešimtainių reikšmių sąrašą iš kurių galėsime atgaminti pikselius
 
@@ -62,7 +52,7 @@ public class ImageData implements BinaryData {
     }
 
     @Override
-    public List<Integer> getBytes() {
+    public List<Byte> getBytes() {
         return bytes;
     }
 

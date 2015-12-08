@@ -13,8 +13,8 @@ public class ParityCheckMatrix extends Matrix {
     }
 
     @Override
-    public List<Integer> multiply(List<Integer> vector) {
-        List<Integer> resultVector = new ArrayList<>();
+    public List<Byte> multiply(List<Byte> vector) {
+        List<Byte> resultVector = new ArrayList<>();
 
         for(MatrixLine line : matrixLines){
             Integer lineResult = 0;
@@ -23,7 +23,7 @@ public class ParityCheckMatrix extends Matrix {
                 lineResult += line.get(index) * vector.get(index);
             }
 
-            resultVector.add(lineResult);
+            resultVector.add(lineResult.byteValue());
         }
 
         return resultVector;

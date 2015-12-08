@@ -8,14 +8,15 @@ import java.util.stream.Collectors;
  */
 public class VectorData implements BinaryData {
     String rawVector;
-    List<Integer> binaryData;
+    List<Byte> binaryData;
 
     public VectorData(String rawVector) {
         this.rawVector = rawVector;
         binaryData = rawVector.chars()
-                .map(Character::getNumericValue)
-                .boxed()
-                .collect(Collectors.toList());
+                              .map(Character::getNumericValue)
+                              .boxed()
+                              .map(Integer::byteValue)
+                              .collect(Collectors.toList());
     }
 
 
@@ -28,7 +29,7 @@ public class VectorData implements BinaryData {
     }
 
     @Override
-    public List<Integer> getBytes() {
+    public List<Byte> getBytes() {
 ;       return binaryData;
     }
 
