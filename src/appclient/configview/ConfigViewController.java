@@ -119,7 +119,9 @@ public class ConfigViewController {
 
             Parent root = null;
             try {
-                root = FXMLLoader.load(DemoController.class.getResource("demoview.fxml"));
+                System.out.println(getClass().getClassLoader().getResource("resources/demoview.fxml"));
+
+                root = FXMLLoader.load(getClass().getClassLoader().getResource("resources/demoview.fxml"));
                 stage.setTitle("Sep by step Demonstracija");
                 stage.setScene(new Scene(root, 800, 600));
                 stage.show();

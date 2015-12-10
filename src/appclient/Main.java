@@ -1,4 +1,4 @@
-package appclient;
+package main.appclient;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +13,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("configview/configview.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("resources/configview.fxml"));
         primaryStage.setTitle("Sep by step Demonstracija");
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
         primaryStage.show();
