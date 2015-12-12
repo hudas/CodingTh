@@ -4,10 +4,10 @@ import main.appclient.configview.validators.ConfigViewFormValidator;
 import main.appclient.configview.validators.GeneratorFormValidator;
 import main.appclient.configview.viewforms.ConfigViewForm;
 import main.appclient.configview.viewforms.GeneratorViewForm;
-import main.appclient.demo.DemoController;
 import main.appmodel.ConfigurationRepository;
 import main.domain.chanel.Channel;
-import main.domain.criptography.*;
+import main.domain.criptography.code.Code;
+import main.domain.criptography.code.CodeBuilder;
 import main.domain.criptography.matrix.GeneratorMatrix;
 import main.domain.criptography.matrix.GeneratorMatrixGenerator;
 import main.domain.criptography.matrix.MatrixLine;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 
 /**
- * Created by ignas on 15.11.15.
+ * Konfigūracijos valdymo formos kontroleris - Integracinis taškas tarp vartotojo sąsajos ir logines dalies
  */
 public class ConfigViewController {
 
@@ -62,10 +62,12 @@ public class ConfigViewController {
 
     @FXML
     public void initialize(){
+        // Veiksmai kuriuos programa vykdys paspaudus mygtuka - Generuoti matrica
         generate.setOnAction(event -> {
             Optional<ArrayList<String>> errors = Optional.empty();
 
             try {
+                // Validuojami ivesti duomenys reikalingi sugeneruoti matrica
                 errors = new GeneratorFormValidator(generateViewForm()).validate();
             } catch (NumberFormatException e){
                 errorLabel.setText("Visi kodo parametrai turi būti skaitiniai");
@@ -77,6 +79,8 @@ public class ConfigViewController {
                 return;
             }
 
+
+            // Generuojama matrica, pagal pateiktus parametrus
             GeneratorMatrix matrix = new GeneratorMatrixGenerator()
                                         .lines(Integer.parseInt(codeLength.getText()))
                                         .rows(Integer.parseInt(codeDimension.getText()))
@@ -85,6 +89,8 @@ public class ConfigViewController {
             generatorMatrix.setText(matrix.toString());
         });
 
+
+        // Veiksmai kuriuos programa vykdys paspaudus mygtuką - Išsaugoti
         submit.setOnAction(event -> {
             errorLabel.setText("");
 
@@ -92,31 +98,37 @@ public class ConfigViewController {
 
             ConfigViewForm formData = generateConfigForm();
             try {
+                // Validuojama konfigūracijos forma
                 errors = new ConfigViewFormValidator(formData).validate();
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 errorLabel.setText("Visi kodo parametrai turi būti skaitiniai");
                 return;
             }
 
-            if (errors.isPresent()){
+            if (errors.isPresent()) {
                 errorLabel.setText(errors.get().get(0));
                 return;
             }
 
+            // Jei visi parametrai validus: Sukuriamas ir repozitorijoje issaugomas kanala imituojantis objektas
             Channel configuredChannel = new Channel(Integer.parseInt(channelNoise.getText()));
             repository.setChannel(configuredChannel);
 
+
+            // Is sasajoje ivestos ar sugeneruotos formos sukonstruojama generuojanti matrica
             GeneratorMatrix matrix = buildMatrix(formData);
 
+            // Is sasajoje ivestu duomenu sugeneruojamas loginis kodo vienetas kuris issaugomas repozitorijoje
             Code cofiguredCode = new CodeBuilder()
-                                    .dimension(Integer.parseInt(codeDimension.getText()))
-                                    .length(Integer.parseInt(codeLength.getText()))
-                                    .matrix(matrix)
-                                    .build();
+                    .dimension(Integer.parseInt(codeDimension.getText()))
+                    .length(Integer.parseInt(codeLength.getText()))
+                    .matrix(matrix)
+                    .build();
             repository.setCode(cofiguredCode);
 
-            Stage stage = getStage();
 
+            // Integraciniai veiksmai, atverciamas ir paruosiamas demonstracinis langas
+            Stage stage = getStage();
             Parent root = null;
             try {
                 root = FXMLLoader.load(getClass().getClassLoader().getResource("resources/demoview.fxml"));
@@ -130,12 +142,17 @@ public class ConfigViewController {
         });
     }
 
+
+    /**
+     * Is sasajoje ivestu duomenu sukonstruojamas duomenu perdavimo objektas su konfiguracijos duomenimis
+     * @return duomenu sasajos objektas
+     * @throws NumberFormatException grazinama klaida jeigu ivesti duomenis neatitinka skaitinio formato
+     */
     public ConfigViewForm generateConfigForm() throws NumberFormatException{
         ConfigViewForm form = new ConfigViewForm();
 
         form.setCodeDimension(Integer.parseInt(codeDimension.getText()));
         form.setCodeLength(Integer.parseInt(codeLength.getText()));
-//        form.setChannelNoise(new BigDecimal(channelNoise.getText().replace(",", ".")));
         form.setChannelNoise(Integer.parseInt(channelNoise.getText()));
         List<List<Integer>> matrix = new ArrayList<>();
         String matrixString = generatorMatrix.getText();
@@ -155,6 +172,11 @@ public class ConfigViewController {
         return form;
     }
 
+    /**
+     * Is sasajoje ivestu duomenu sukonstruojamas duomenu perdavimo objektas su matricos generavimui reikalingais duomenimis
+     * @return duomenu sasajos objektas
+     * @throws NumberFormatException grazinama klaida jeigu ivesti duomenis neatitinka skaitinio formato
+     */
     public GeneratorViewForm generateViewForm() throws NumberFormatException{
         GeneratorViewForm form = new GeneratorViewForm();
 
@@ -164,6 +186,12 @@ public class ConfigViewController {
         return form;
     }
 
+
+    /**
+     * Is sasajoje ivestu duomenu sukonstruojamas generatoriaus matricos objektas
+     * @param formData konfiguracijos duomenu perdavimo objektas su kodo konfiguracija
+     * @return GeneratorMatrix generatoriaus matrica
+     */
     private GeneratorMatrix buildMatrix(ConfigViewForm formData){
         GeneratorMatrix matrix = new GeneratorMatrix(formData.getCodeLength(), formData.getCodeDimension());
 
@@ -176,6 +204,11 @@ public class ConfigViewController {
         return matrix;
     }
 
+
+    /**
+     * Pagalbinis metodas, gauti tevini vartotojo sasajos langa
+     *
+     */
     public Stage getStage() {
         return (Stage) root.getScene().getWindow();
     }

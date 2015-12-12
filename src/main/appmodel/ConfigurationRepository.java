@@ -1,10 +1,11 @@
 package main.appmodel;
 
 import main.domain.chanel.Channel;
-import main.domain.criptography.Code;
+import main.domain.criptography.code.Code;
 
 /**
- * Created by ignas on 15.12.1.
+ * Repozitorija imituojanti esybe kuri skirta saugomi kodo ir kanalo logines esybes sukonstruotos konfiguracijos lange,
+ * kad veliau juos butu galima pasiekti is aplikacijos
  */
 public class ConfigurationRepository {
     //Singleton for Imaginary persistence layer

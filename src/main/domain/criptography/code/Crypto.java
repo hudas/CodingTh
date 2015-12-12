@@ -1,4 +1,6 @@
-package main.domain.criptography;
+package main.domain.criptography.code;
+
+import main.domain.criptography.BinaryStream;
 
 /**
  * Created by ignas on 15.12.6.

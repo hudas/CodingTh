@@ -1,7 +1,7 @@
 package main.domain.criptography.matrix;
 
-import com.sun.deploy.util.StringUtils;
 import main.domain.criptography.BinaryWord;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

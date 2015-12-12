@@ -1,7 +1,8 @@
 package main.appclient.configview.viewforms;
 
 /**
- * Created by ignas on 15.11.22.
+ * Duomenu perdavimo objekto klase (DTO)
+ * Skirta perduoti duomenis is generatoriaus formos i kontrolerius
  */
 public class GeneratorViewForm {
     Integer codeLength;

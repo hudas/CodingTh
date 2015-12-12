@@ -1,4 +1,4 @@
-package main.domain.criptography;
+package main.domain.criptography.code;
 
 /**
  * Created by ignas on 15.12.5.

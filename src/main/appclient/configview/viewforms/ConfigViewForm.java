@@ -3,7 +3,8 @@ package main.appclient.configview.viewforms;
 import java.util.List;
 
 /**
- * Created by ignas on 15.11.15.
+ * Duomenu perdavimo objekto klase (DTO)
+ * Skirta perduoti duomenis is konfiguracijos formos i kontrolerius
  */
 public class ConfigViewForm {
     Integer codeLength;

@@ -9,6 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import main.domain.criptography.code.CodeAdapter;
+import main.domain.criptography.code.EncodingException;
+import main.domain.criptography.data.ImageData;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -16,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by ignas on 15.11.14.
+ * Konfigūracijos valdymo formos kontroleris - Integracinis taškas tarp vartotojo sąsajos ir logines dalies
  */
 public class PictureController {
 
@@ -42,16 +45,18 @@ public class PictureController {
     Channel channel;
 
     public void initialize(){
+        // Is repozitorijos isiimamai Kodo ir kanalo loginiai vienetai
         code = new CodeAdapter(ConfigurationRepository.getRepository().getCode());
         channel = ConfigurationRepository.getRepository().getChannel();
 
         select.setOnAction(event -> {
+            // Atidaromas nuotraukos pasirinkimo langas
             File imageFile = chooser.showOpenDialog(null);
 
             long startTime = System.currentTimeMillis();
             long endTime = 0;
 
-
+            // Pasirinkta nuotrauka nuskaitoma is failines sitemos i atminti
             BufferedImage bufferedImage = null;
             try {
                 bufferedImage = ImageIO.read(imageFile);
@@ -59,40 +64,43 @@ public class PictureController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            inputImage.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
 
+            // Is atmintyje saugomos nuotraukos sukuriamas Loginis duomenu vienetas
             ImageData inputImage = new ImageData(bufferedImage);
+            // Ikelta nuotrauka atvaizduojama lange
+            this.inputImage.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
 
-            ImageData receivedImage = ImageData.from(channel.send(inputImage.getStream()), inputImage.getWidth(), inputImage.getHeight());
-            rawResult.setImage(SwingFXUtils.toFXImage(receivedImage.getRepresentation(), null));
 
-            endTime = System.currentTimeMillis();
-            System.out.println("Step1 : " + (endTime - startTime));
+            // Demonstracija su nekoduotu atvaizdu
+            rawDemo(inputImage);
 
             try {
-                BinaryStream encodedStream = code.encode(inputImage.getStream());
-                endTime = System.currentTimeMillis();
-                System.out.println("Encode : " + (endTime - startTime));
-
-                BinaryStream dissortedStream = channel.send(encodedStream);
-                endTime = System.currentTimeMillis();
-                System.out.println("Send : " + (endTime - startTime));
-
-                ImageData decoded = ImageData.from(code.decode(dissortedStream), inputImage.getWidth(), inputImage.getHeight());
-
-                endTime = System.currentTimeMillis();
-                System.out.println("Decode : " + (endTime - startTime));
-
-                encodedResult.setImage(SwingFXUtils.toFXImage(decoded.getRepresentation(), null));
-
+                // Demonstracija su koduotu atvaizdu
+                encodedDemo(inputImage);
             } catch (EncodingException e) {
-                e.printStackTrace();
+                errorLabel.setText("Nepavyko uzkoduoti");
             }
-
-
-            System.out.println("Užtruko : " + (endTime - startTime));
-
         });
+    }
+
+    private void rawDemo(ImageData inputImage) {
+        // Atvaizdo duomenys siunciami kanalu.
+        // Is kanalo gautu bitu konstruojamas naujas tokio pacio dydzio atvaizdas
+        ImageData receivedImage = ImageData.from(channel.send(inputImage.getStream()), inputImage.getWidth(), inputImage.getHeight());
+        rawResult.setImage(SwingFXUtils.toFXImage(receivedImage.getRepresentation(), null));
+    }
+
+    private void encodedDemo(ImageData inputImage) throws EncodingException {
+        // Gaunami Atmintyje issaugoto atvaizdo bitai uzkoduojami kodu.
+        BinaryStream encodedStream = code.encode(inputImage.getStream());
+
+        // Atvaizdo uzkoduoti bitai siunciami kanalu
+        BinaryStream dissortedStream = channel.send(encodedStream);
+
+        // Is kanalo gauti atvaizdo bitai dekoduojami, ir is ju konstruojamas naujas tokio pay dydzio atvaizdas
+        ImageData decoded = ImageData.from(code.decode(dissortedStream), inputImage.getWidth(), inputImage.getHeight());
+
+        encodedResult.setImage(SwingFXUtils.toFXImage(decoded.getRepresentation(), null));
     }
 
 }

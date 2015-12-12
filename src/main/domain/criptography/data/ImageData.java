@@ -1,4 +1,8 @@
-package main.domain.criptography;
+package main.domain.criptography.data;
+
+import main.domain.criptography.BinaryStream;
+import main.domain.criptography.BinaryWord;
+import main.domain.criptography.ByteConverter;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;

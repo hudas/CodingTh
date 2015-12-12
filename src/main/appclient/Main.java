@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Pradinis aplikacijos taskas uzkraunantis pradine vartotojo sasaja
+ */
 public class Main extends Application {
 
     public static final int WIDTH = 800;
@@ -13,13 +16,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        System.out.println(getClass().getClassLoader().getResource("resources/configview.fxml"));
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("resources/configview.fxml"));
         primaryStage.setTitle("Sep by step Demonstracija");
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
         primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);

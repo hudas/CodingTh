@@ -1,4 +1,6 @@
-package main.domain.criptography;
+package main.domain.criptography.data;
+
+import main.domain.criptography.BinaryStream;
 
 import java.util.ArrayList;
 import java.util.List;

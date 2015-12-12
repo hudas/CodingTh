@@ -1,4 +1,4 @@
-package main.domain.criptography;
+package main.domain.criptography.code;
 
 import main.domain.criptography.matrix.GeneratorMatrix;
 import main.domain.criptography.matrix.GeneratorMatrixGenerator;

@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 /**
- * Created by ignas on 15.11.22.
+ * Klasė atsakinga už kodo generatoriaus matricos validavimą.
+ * Validuojama, kad:
+ * 1. Kodo dimensija natūralusis skaičius.
+ * 2. Kodo ilgis natūralusis skaičius.
+ * 3. Kodo ilgis didesnis už dimensiją.
  */
 public class GeneratorFormValidator {
     GeneratorViewForm form;

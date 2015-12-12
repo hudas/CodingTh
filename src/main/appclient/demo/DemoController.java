@@ -9,6 +9,10 @@ import javafx.scene.layout.Pane;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Konfigūracijos valdymo formos kontroleris - Integracinis taškas tarp vartotojo sąsajos ir logines dalies
+ * Esybe rupinasi kad pasirinkus demonstracijos buda butu uzkraunamas tinkamas vartotojo sasajos komponentas
+ */
 public class DemoController {
 
     public static final String VECTOR_VIEW = "resources/vectorview.fxml";
