@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ignas on 15.12.1.
+ *  Abstrakcija atvaizduojanti dvejetaini bitu srauta, ir pagrindinus veiksmus atliekamus su juo.
  */
 public class BinaryStream {
 
@@ -23,6 +23,11 @@ public class BinaryStream {
     }
 
 
+    /**
+     * Suskaido ir grazina suskaidytu bitu srauta i nurodyto ilgio zodzius
+     * @param wordLength nurodo zodzio ilgi i kuri reikia suskaidydi zodzius
+     * @return suskaidytu zodziu sarasa
+     */
     public List<BinaryWord> splitToWords(Integer wordLength) {
         List<BinaryWord> words = new ArrayList<>();
         for(int i = 0 ; i < bytes.size(); i += wordLength){

@@ -5,10 +5,9 @@ import main.domain.criptography.BinaryStream;
 import java.util.List;
 
 /**
- * Created by ignas on 15.11.15.
+ * Abstrakcija skirta abibrezti kontrakta tarp duomenu ir dvejetaines bitu sekos
  */
 public interface BinaryData {
-    List<Byte> getBytes();
     BinaryStream getStream();
     boolean isValid();
 }

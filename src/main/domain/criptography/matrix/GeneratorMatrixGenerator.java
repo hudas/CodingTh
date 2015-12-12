@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by ignas on 15.11.22.
+ * Esybe besirupinanti generatoriaus matricos generavimu pagal perduotus parametrus
  */
 public class GeneratorMatrixGenerator {
 
@@ -38,18 +38,24 @@ public class GeneratorMatrixGenerator {
         return matrix;
     }
 
+    /**
+     * Generuoja standarines matrcios n-taja eilute
+     * @param lineIndex eilutes numeris
+     * @return matricos eilute
+     */
     private MatrixLine generateLine(Integer lineIndex){
         MatrixLine matrixLine = new MatrixLine();
 
         for(int index = 0; index < linesCount; index++){
             Integer value;
 
+            // Istrizaine uzpildoma vienetais
             if (index == lineIndex){
                 value = 1;
             } else if (index < rowsCount) {
                 value = 0;
             } else {
-
+                // Likusios reiksmes uzpildomos atsitiktinemis dvejetainemis reiksmemis
                 value = valueGenerator.nextInt(MAX_VALUE);
             }
 

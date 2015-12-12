@@ -6,14 +6,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by ignas on 15.12.1.
+ * Esybe atspindinti Vektoriu
  */
 public class VectorData implements BinaryData {
     String rawVector;
     List<Byte> binaryData;
 
+
+    /**
+     * Konstruojama is tekstino vektoriaus atvaizdo
+     * @param rawVector
+     */
     public VectorData(String rawVector) {
         this.rawVector = rawVector;
+        // Iteruojama per kiekviena vektoriaus simboli, gaunant jo skaitine reiksme ir dedant i sarasa
         binaryData = rawVector.chars()
                               .map(Character::getNumericValue)
                               .boxed()
@@ -22,29 +28,42 @@ public class VectorData implements BinaryData {
     }
 
 
-    // Another bottleneck TODO REFACTOR
+    /**
+     * Konstuoruoja vektoriaus esybe is dvejetaines bitu sekos
+     * @param stream
+     * @return
+     */
     public static VectorData fromBytes(BinaryStream stream){
         StringBuilder builder = new StringBuilder();
+
+        // Kiekvienas bitas is bitu sekos yra prijungiamas prie simbolines eilutes galo
         stream.getBytes().forEach(builder::append);
 
         return new VectorData(builder.toString());
     }
 
-    @Override
-    public List<Byte> getBytes() {
-;       return binaryData;
-    }
-
+    /**
+     * Grazina dvejetaini bitu srauta atspindinti vektoriu
+     * @return
+     */
     @Override
     public BinaryStream getStream() {
         return new BinaryStream(binaryData);
     }
 
+    /**
+     * Tikrina ar Vektorine esybe tinkamai konvertuota i dvejetaine bitu seka
+     * @return
+     */
     @Override
     public boolean isValid(){
         return binaryData.stream().allMatch(e -> e == 0 || e == 1);
     }
 
+    /**
+     * Gaunama simbolinis bitu sekos atvaizdas
+     * @return
+     */
     public String getRawVector() {
         return rawVector;
     }

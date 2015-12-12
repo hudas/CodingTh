@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by ignas on 15.12.7.
+ * Atvaizdo duomenu esybė.
+ *
  */
 public class ImageData implements BinaryData {
 
@@ -20,6 +21,10 @@ public class ImageData implements BinaryData {
     Integer width;
     Integer height;
 
+    /**
+     * Konstruojama is paveikslėlio, iteruojant per visus paveikslelio reiksminius baitus, konvertuojant juos i dvejetaine bitu seka
+     * @param image
+     */
     public ImageData(BufferedImage image) {
         rawImage = image;
 
@@ -34,8 +39,15 @@ public class ImageData implements BinaryData {
         }
     }
 
+    /**
+     * Metodas is dvejetaines bitu sekos atgaminantis nurodyto dydzio atvaizda
+     * @param bytes dvejetaine bitu seka
+     * @param width plotis
+     * @param height aukstis
+     * @return
+     */
     public static ImageData from(BinaryStream bytes, Integer width, Integer height){
-        // Baitus gauname tiesiai iš kanalo t.y. sąrašas su reikšmėmis su 1 ir 0, reikia pasiversti atgal į
+        // Bitus gauname tiesiai iš kanalo t.y. sąrašas su reikšmėmis su 1 ir 0, reikia pasiversti atgal į
         // dešimtainių reikšmių sąrašą iš kurių galėsime atgaminti pikselius
 
         List<Integer> decimalBytes = bytes.splitToWords(32)
@@ -48,28 +60,36 @@ public class ImageData implements BinaryData {
         for(int verticalIndex = 0; verticalIndex < height; verticalIndex++){
             for(int horizontalIndex = 0; horizontalIndex < width; horizontalIndex++){
                 image.setRGB(horizontalIndex, verticalIndex, decimalBytes.get(horizontalIndex + verticalIndex*height));
-                 // Susisdedame visus pikselio spalvos baitus atgal į paveikslėlį.
+                 // Susisdedame visus pikselio spalvos baitus atgal į tam tikras koordinates taip sudarydami atvaizda.
             }
         }
 
         return new ImageData(image);
     }
 
-    @Override
-    public List<Byte> getBytes() {
-        return bytes;
-    }
 
+    /**
+     * Grazina paveikslelio atvaizda uzkoduota dvejetaine bitu seka
+     * @return
+     */
     @Override
     public BinaryStream getStream() {
         return BinaryStream.from(bytes);
     }
 
+    /**
+     * validuoja ar konvertuojant nebuvo klaidu - ar visos bitu reiksmes dvejetaines
+     * @return
+     */
     @Override
     public boolean isValid() {
         return bytes.stream().allMatch(e -> e == 0 || e == 1);
     }
 
+    /**
+     * Grazina atvaizdo esybę
+     * @return
+     */
     public BufferedImage getRepresentation(){
         return rawImage;
     }

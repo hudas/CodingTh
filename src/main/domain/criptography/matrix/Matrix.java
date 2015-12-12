@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ignas on 15.12.5.
+ * Abstrakcija apibrezianti matrica ir pagrindines jos operacijas
  */
 public abstract class Matrix {
     protected Integer columnsCount;

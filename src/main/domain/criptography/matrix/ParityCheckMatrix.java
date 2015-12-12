@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ignas on 15.12.5.
+ * Patikrinimo matricos esybe
  */
 public class ParityCheckMatrix extends Matrix {
 
@@ -12,10 +12,19 @@ public class ParityCheckMatrix extends Matrix {
         super(columnsCount, linesCount);
     }
 
+
+    /**
+     * Patikrinimo Matricos daugyba is transponuoto vektoriaus
+     * @param vector
+     * @return
+     */
     @Override
     public List<Byte> multiply(List<Byte> vector) {
         List<Byte> resultVector = new ArrayList<>();
 
+        // Iteruojame per kiekviena matricos eilute
+        // n-taji eilutes elementa dauginame is n-tojo vektoriaus elemento
+        // skaiciuojame eilutes suma
         for(MatrixLine line : matrixLines){
             Integer lineResult = 0;
 

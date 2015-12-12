@@ -252,7 +252,13 @@ public class Code implements Crypto {
         return array;
     }
 
-    //
+    /**
+     * Pagal duotą patikrinimo matrica visiems galimiems tam tikro svorio kodo žodžiams sugeneruoja sindromus su ju klasiu lyderiu svoriais
+     * @param checkMatrix patikrinimo matrica
+     * @param weight zodzio svoris
+     * @param possibleWords galimi kodo zodziai
+     * @return sindromu su klasiu lyderiu svoriais sarasas
+     */
     private List<Sindrome> generateSindromes(ParityCheckMatrix checkMatrix, int weight, Set<BinaryWord> possibleWords) {
         List<Sindrome> sindromes = new ArrayList<>();
         for(BinaryWord word : possibleWords){
@@ -265,9 +271,12 @@ public class Code implements Crypto {
     }
 
 
-    /*
-     * 'Wrapper' metodas užklojantis rekursijos implementaciją, kad suteikti paprastą API rekursijos naudojimui
+    /**
+     * Metodas užklojantis rekursijos implementaciją, kad suteikti paprastą API visu galimu tam tikro svorio
+     * zodziu generavimui
      *
+     * @param weight generuojamu zodziu svoris
+     * @return galimi kodo zodziai
      */
     private Set<BinaryWord> getAllWordsForWeight(Integer weight){
         Set<BinaryWord> possibleWords = new HashSet<>();
@@ -281,6 +290,16 @@ public class Code implements Crypto {
         return possibleWords;
     }
 
+
+    /**
+     * Rekursijos implementaciją, generuoja sarasa visu galimu tam tikro kodo zodziu
+     *
+     * @param word is praeito lygio atkeliaves zodis
+     * @param weight generuojamu zodziu svoris
+     * @param currentWeight esamo lygio sugeneruotas zodis
+     * @param fromIndex indeksas nuo kurio reikia iterpineti naujas itu reiksmes
+     * @return galimi kodo zodziai
+    */
     private List<BinaryWord> getAllWordsForWeight(BinaryWord word, Integer weight, Integer currentWeight, Integer fromIndex){
         List<BinaryWord> possibleWords = new ArrayList<>();
 

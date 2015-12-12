@@ -3,7 +3,7 @@ package main.domain.criptography.code;
 import main.domain.criptography.BinaryStream;
 
 /**
- * Created by ignas on 15.12.6.
+ * Abstrakcija skirta apibrezti kodo kontraktui
  */
 public interface Crypto {
     BinaryStream encode(BinaryStream data) throws EncodingException;

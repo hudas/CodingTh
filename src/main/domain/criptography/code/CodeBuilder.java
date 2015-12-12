@@ -4,7 +4,8 @@ import main.domain.criptography.matrix.GeneratorMatrix;
 import main.domain.criptography.matrix.GeneratorMatrixGenerator;
 
 /**
- * Created by ignas on 15.11.22.
+ * Builder pattern
+ * Esybe besirupinanti kodo generavimu is pateiktu parametru.
  */
 public class CodeBuilder {
     private Integer length;
