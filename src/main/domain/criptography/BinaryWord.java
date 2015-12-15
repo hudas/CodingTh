@@ -72,7 +72,7 @@ public class BinaryWord {
 
         // Tikrinama ar kiekvienas bitas lygus
         for(int index = 0; index < getBits().size(); index++){
-            if (getBits().get(index) != getBits().get(index)){
+            if (getBits().get(index) != word.getBits().get(index)){
                 equal = false;
                 break;
             }

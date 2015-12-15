@@ -239,11 +239,13 @@ public class Code implements Crypto {
         int weight = 0;
 
         while (weight < Math.pow(DICTIONARY_SIZE, length) && array.getSindromes().size() < Math.pow(DICTIONARY_SIZE, length - dimension)){
-            Set<BinaryWord> possibleWords = getAllWordsForWeight(weight);
+            List<BinaryWord> possibleWords = getAllWordsForWeight(weight);
 
             List<Sindrome> sindromes = generateSindromes(checkMatrix, weight, possibleWords);
             for(Sindrome sindrome : sindromes){
-                if (array.getSindromes().stream().noneMatch(existingSindrome -> existingSindrome.equalsTo(sindrome))){
+                if (array.getSindromes()
+                         .stream()
+                         .noneMatch(existingSindrome -> existingSindrome.equalsTo(sindrome))){
                     array.addSindromes(sindrome);
                 }
             }
@@ -260,7 +262,7 @@ public class Code implements Crypto {
      * @param possibleWords galimi kodo zodziai
      * @return sindromu su klasiu lyderiu svoriais sarasas
      */
-    private List<Sindrome> generateSindromes(ParityCheckMatrix checkMatrix, int weight, Set<BinaryWord> possibleWords) {
+    private List<Sindrome> generateSindromes(ParityCheckMatrix checkMatrix, int weight, List<BinaryWord> possibleWords) {
         List<Sindrome> sindromes = new ArrayList<>();
         for(BinaryWord word : possibleWords){
             Sindrome sindrome = new Sindrome(convertToBinary(checkMatrix.multiply(word.getBits())), weight);
@@ -279,8 +281,8 @@ public class Code implements Crypto {
      * @param weight generuojamu zodziu svoris
      * @return galimi kodo zodziai
      */
-    private Set<BinaryWord> getAllWordsForWeight(Integer weight){
-        Set<BinaryWord> possibleWords = new HashSet<>();
+    private List<BinaryWord> getAllWordsForWeight(Integer weight){
+        List<BinaryWord> possibleWords = new ArrayList<>();
 
         if (weight == 0){
             possibleWords.add(BinaryWord.getZero(length));

@@ -59,7 +59,7 @@ public class ImageData implements BinaryData {
 
         for(int verticalIndex = 0; verticalIndex < height; verticalIndex++){
             for(int horizontalIndex = 0; horizontalIndex < width; horizontalIndex++){
-                image.setRGB(horizontalIndex, verticalIndex, decimalBytes.get(horizontalIndex + verticalIndex*height));
+                image.setRGB(horizontalIndex, verticalIndex, decimalBytes.get(horizontalIndex + verticalIndex*width));
                  // Susisdedame visus pikselio spalvos baitus atgal į tam tikras koordinates taip sudarydami atvaizda.
             }
         }

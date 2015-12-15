@@ -79,7 +79,7 @@ public class PictureController {
             this.inputImage.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
 
             long end = System.currentTimeMillis();
-            System.out.println("Siuntimas koduotu kanalu: " + (end - start));
+            System.out.println("uzkrovimas: " + (end - start));
         });
 
 
@@ -90,7 +90,7 @@ public class PictureController {
             rawDemo(imageData);
 
             long end = System.currentTimeMillis();
-            System.out.println("Siuntimas koduotu kanalu: " + (end - start));
+            System.out.println("Siuntimas nekoduotu kanalu: " + (end - start));
         });
 
 
