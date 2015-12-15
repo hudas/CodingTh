@@ -20,7 +20,7 @@
        <Text text="Generuojanti matrica" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="TOP" />
        <TextArea fx:id="generatorMatrix" prefColumnCount="20" prefRowCount="5" promptText="Generuojanti matrica" GridPane.columnIndex="1" GridPane.rowIndex="4" />
        <Button fx:id="generate" text="Generuoti" GridPane.columnIndex="3" GridPane.rowIndex="4" GridPane.halignment="LEFT" GridPane.valignment="TOP"/>
-       <Text text="Generuojančią matricą pateikite kaip reiškmių skirtuką naudodami kablelį, o eilučių kabliataškį." GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+       <Text text="Generuojančią matricą pateikite kaip reiškmių skirtuką naudodami tarpą." GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
    
        <Text text="Kanalo iškraipymų tikimybė" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
        <TextField fx:id="channelNoise" promptText="Iškraipymų tikimybė" GridPane.columnIndex="1" GridPane.rowIndex="6" />

@@ -16,9 +16,11 @@
     <Text text="Pradinė nuotrauka:" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
     <ImageView fx:id="inputImage" GridPane.columnIndex="1" GridPane.rowIndex="3" preserveRatio="true" fitHeight="250"/>
 
-    <Text text="Nuotrauka siųsta nekoduotu kanalu:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-    <ImageView fx:id="rawResult" GridPane.columnIndex="0" GridPane.rowIndex="5" preserveRatio="true" fitHeight="250"/>
+    <Button fx:id="sendRaw" text="Siusti nekoduotu kanalu" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.halignment="CENTER" GridPane.valignment="TOP"/>
+    <Text text="Nuotrauka siųsta nekoduotu kanalu:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+    <ImageView fx:id="rawResult" GridPane.columnIndex="0" GridPane.rowIndex="6" preserveRatio="true" fitHeight="250"/>
 
-    <Text text="Nuotrauka siųsta koduotu kanalu:" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-    <ImageView fx:id="encodedResult" GridPane.columnIndex="1" GridPane.rowIndex="5" preserveRatio="true" fitHeight="250"/>
+    <Button fx:id="sendEncoded" text="Siusti koduotu kanalu" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.halignment="CENTER" GridPane.valignment="TOP"/>
+    <Text text="Nuotrauka siųsta koduotu kanalu:" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+    <ImageView fx:id="encodedResult" GridPane.columnIndex="1" GridPane.rowIndex="6" preserveRatio="true" fitHeight="250"/>
 </GridPane>

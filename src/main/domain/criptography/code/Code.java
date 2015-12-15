@@ -135,9 +135,10 @@ public class Code implements Crypto {
                 break;
             }
 
-            // Jei naujojo zodzio lyderio svoris mazesnis nei, zodzio pries pakeiciant bito reiksme, pagal algoritma
-            // laikome kad naujasis zodis yra teisingesnis ir artimesnis siustajam, issaugome si zodi tolimesnius veiksmus atliksime su juo
+            // Jei lyderio svoris sumazejo, tesiame dekodavima su naujuoju zodziu
+
             if (invertedWordLeaderWeight >= leaderWeight){
+                // naujojo zodzio lyderio svoris buvo toks pats arba didesnis atstatome bita i pradine busena
                 word.invertAtIndex(index);
             }
 

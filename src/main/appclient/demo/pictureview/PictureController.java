@@ -30,6 +30,12 @@ public class PictureController {
     Button select;
 
     @FXML
+    Button sendRaw;
+
+    @FXML
+    Button sendEncoded;
+
+    @FXML
     ImageView rawResult;
 
     @FXML
@@ -44,20 +50,22 @@ public class PictureController {
 
     Channel channel;
 
+    ImageData imageData;
+
+
     public void initialize(){
         // Is repozitorijos isiimamai Kodo ir kanalo loginiai vienetai
         code = new CodeAdapter(ConfigurationRepository.getRepository().getCode());
         channel = ConfigurationRepository.getRepository().getChannel();
 
         select.setOnAction(event -> {
+            long start = System.currentTimeMillis();
+
             // Atidaromas nuotraukos pasirinkimo langas
             File imageFile = chooser.showOpenDialog(null);
 
-            long startTime = System.currentTimeMillis();
-            long endTime = 0;
-
-            // Pasirinkta nuotrauka nuskaitoma is failines sitemos i atminti
             BufferedImage bufferedImage = null;
+            // Pasirinkta nuotrauka nuskaitoma is failines sitemos i atminti
             try {
                 bufferedImage = ImageIO.read(imageFile);
                 bufferedImage.getRGB(0,0);
@@ -66,20 +74,36 @@ public class PictureController {
             }
 
             // Is atmintyje saugomos nuotraukos sukuriamas Loginis duomenu vienetas
-            ImageData inputImage = new ImageData(bufferedImage);
+            imageData = new ImageData(bufferedImage);
             // Ikelta nuotrauka atvaizduojama lange
             this.inputImage.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
 
+            long end = System.currentTimeMillis();
+            System.out.println("Siuntimas koduotu kanalu: " + (end - start));
+        });
+
+
+        sendRaw.setOnAction(event -> {
+            long start = System.currentTimeMillis();
 
             // Demonstracija su nekoduotu atvaizdu
-            rawDemo(inputImage);
+            rawDemo(imageData);
 
+            long end = System.currentTimeMillis();
+            System.out.println("Siuntimas koduotu kanalu: " + (end - start));
+        });
+
+
+        sendEncoded.setOnAction(event -> {
+            long start = System.currentTimeMillis();
             try {
                 // Demonstracija su koduotu atvaizdu
-                encodedDemo(inputImage);
+                encodedDemo(imageData);
             } catch (EncodingException e) {
                 errorLabel.setText("Nepavyko uzkoduoti");
             }
+            long end = System.currentTimeMillis();
+            System.out.println("Siuntimas koduotu kanalu: " + (end - start));
         });
     }
 
